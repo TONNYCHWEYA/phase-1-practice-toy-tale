@@ -34,9 +34,32 @@ function renderOneToy(toy){
     <p>${toy.likes} likes</p>
     <button class="like-btn" id=${toy.id}>Like ❤️</button>
   `
+   const btn = card.querySelector("button")
+   const p = card.querySelector("p")
+  btn.addEventListener("click", (event) =>{
+    toy.likes = toy.likes + 1
+    p.textContent = toy.likes + " likes"
+    updateLikes(toy)
+  })
   toyCollection.appendChild(card)
 
 }
+
+
+function updateLikes(toyObj){
+  fetch(`http://localhost:3000/toys/${toyObj.id}`, {
+    method: "PATCH",
+    headers:{
+      'content-Type':'application/json',
+      
+    },
+    body:JSON.stringify(toyObj)
+  })
+  .then(res => res.json()
+  .then(toy => console.log(toy)))
+}
+
+
 
 const form = document.getElementsByClassName("add-toy-form")[0]
 console.log(form)
